@@ -1,10 +1,20 @@
 import type { NextPage } from "next";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { RandomFox } from "@/components/RandomFox";
+import { IimageItem } from "@/interfaces/Iimage";
 
 const random = (): number => Math.floor(Math.random()*123) + 1
+const generateId = () => Math.random().toString(36)
 
 const Home: NextPage = () => {
+  const [images, setImages] = useState<IimageItem[]>([
+    { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg` },
+    { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg`},
+    { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg`},
+    { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg`}
+  ])
+
   return (
     <div>
       <Head>
@@ -14,7 +24,13 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <RandomFox image={`https://randomfox.ca/images/${random()}.jpg`} alt={'A fox'}/>
+        <h1 className="text-3xl font-bold underline">Hello fox</h1>
+        { images.map(({id, url}) => (
+          <div key={id} className="p-4">
+            <RandomFox image={url} alt={'A fox'}/>
+          </div>
+        )) }
+        
       </main>
 
       <footer></footer>
