@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import type { MouseEventHandler } from "react";
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { RandomFox } from "@/components/RandomFox";
@@ -9,11 +10,22 @@ const generateId = () => Math.random().toString(36)
 
 const Home: NextPage = () => {
   const [images, setImages] = useState<IimageItem[]>([
-    { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg` },
-    { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg`},
-    { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg`},
-    { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg`}
+    // { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg` },
+    // { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg`},
+    // { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg`},
+    // { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg`}
   ])
+
+  // useEffect(() => setImages([{ id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg` }]), [])
+
+const addNewFox: MouseEventHandler<HTMLButtonElement> = (event) => {
+  // event.preventDefault()
+  const newImageItem: IimageItem = { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg` }
+  setImages([
+    ...images,
+    newImageItem
+  ])
+}
 
   return (
     <div>
@@ -25,6 +37,7 @@ const Home: NextPage = () => {
 
       <main>
         <h1 className="text-3xl font-bold underline">Hello fox</h1>
+        <button onClick={addNewFox}>click me</button>
         { images.map(({id, url}) => (
           <div key={id} className="p-4">
             <RandomFox image={url} alt={'A fox'}/>
