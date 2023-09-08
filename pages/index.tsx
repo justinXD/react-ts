@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import type { MouseEventHandler } from "react";
 import { useEffect, useState } from "react";
 import Head from "next/head";
-import { RandomFox } from "@/components/RandomFox";
+import { LazyImage } from "@/components/RandomFox";
 import { IimageItem } from "@/interfaces/Iimage";
 
 const random = (): number => Math.floor(Math.random()*123) + 1
@@ -40,7 +40,16 @@ const addNewFox: MouseEventHandler<HTMLButtonElement> = (event) => {
         <button onClick={addNewFox}>click me</button>
         { images.map(({id, url}) => (
           <div key={id} className="p-4">
-            <RandomFox image={url} alt={'A fox'}/>
+            <LazyImage src={url} alt={'An image'} onClick={()=> console.log('click')}/>
+            {/* <LazyImage src={url} 
+                  alt={'An image'} 
+                  title="random image" 
+                  width={320} 
+                  height="auto" 
+                  className='rounded bg-gray-300'
+                  onClick={()=> console.log('click')}/> 
+                  si lo hiciera de la otra forma en el componente
+                  asi seria un componente generico*/}
           </div>
         )) }
         

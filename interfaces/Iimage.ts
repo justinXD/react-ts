@@ -1,5 +1,7 @@
-export interface Iimage {
-    image: string,
+import { ImgHTMLAttributes } from "react"
+
+export interface Iimage extends ImgHTMLAttributes<HTMLImageElement> {
+    src: string,
     alt: string
 }
 
