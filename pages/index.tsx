@@ -38,9 +38,20 @@ const addNewFox: MouseEventHandler<HTMLButtonElement> = (event) => {
       <main>
         <h1 className="text-3xl font-bold underline">Hello fox</h1>
         <button onClick={addNewFox}>click me</button>
-        { images.map(({id, url}) => (
+        { images.map(({id, url}, index) => (
           <div key={id} className="p-4">
-            <LazyImage src={url} alt={'An image'} onClick={()=> console.log('click')}/>
+              <LazyImage
+                src={url}
+                width="320"
+                height="auto"
+                className="mx-auto rounded-md bg-gray-300"
+                onClick={() => {
+                  console.log("holi!");
+                }}
+                onLazyLoad={(img) => {
+                  console.log(`Image #${index + 1} cargada. Nodo:`, img);
+                }}
+              />
             {/* <LazyImage src={url} 
                   alt={'An image'} 
                   title="random image" 

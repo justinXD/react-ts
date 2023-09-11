@@ -2,7 +2,8 @@ import { ImgHTMLAttributes } from "react"
 
 export interface Iimage extends ImgHTMLAttributes<HTMLImageElement> {
     src: string,
-    alt: string
+    alt?: string,
+    onLazyLoad?: (img: HTMLImageElement) => void
 }
 
 export interface IimageItem {

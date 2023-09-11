@@ -3,19 +3,28 @@ import { Iimage } from "@/interfaces/Iimage";
 
 
 
-export const LazyImage = (prop: Iimage): JSX.Element => {
+export const LazyImage = ({src, onLazyLoad, ...imgProps}: Iimage): JSX.Element => {
     const node = useRef<HTMLImageElement>(null) // indicamos el type del tipo de elemento que queremos afectar (image en este caso) y lo inicializamos en null
-const [src, setsrc] = useState(
-"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
-)
+    const [isLazyLoaded, setIsLazyLoaded] = useState(false);
+    const [currentSrc, setCurrentSrc] = useState(
+    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
+    )
 
     useEffect(() => {   // con useEffect hacemos que el observer solo funcione del lado del cliente
+        if (isLazyLoaded) {
+            return;
+        }
         //nuevo observador
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                setsrc(prop.src)
-                console.log('interseccion')
+            if (!entry.isIntersecting || !node.current) {
+                return;
+            }
+            setCurrentSrc(src);
+            observer.disconnect();
+            setIsLazyLoaded(true);
+            if (typeof onLazyLoad === "function") {
+                onLazyLoad(node.current);
             }
         })
     })
@@ -29,23 +38,11 @@ const [src, setsrc] = useState(
     // desconectar
     return () => {
         observer.disconnect()
-    }
-    },[prop.src])
-    
-
-    return <img ref={node} 
-                width={320} 
-                height="auto" 
-                className='rounded bg-gray-300' 
-                src={prop.src} alt={prop.alt}
-                onClick={prop.onClick}/>
-                /*tambien puedo hacer 
-                    <img 
-                    ref={node} 
-                    src={prop.src}
-                    {...imgProps}/>
-
-                    si al definir mi componete hago const LazyImage = ({ src, ...imgProps } = Iimage)
-                    donde imgProps sera un objeto con todas las demas propiedades de Iimage
-                */
+        }
+    },[src, onLazyLoad, isLazyLoaded])
+        
+    return <img 
+            ref={node} 
+            src={currentSrc}
+            {...imgProps}/>
 }
