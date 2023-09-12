@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import { LazyImage } from "@/components/RandomFox";
 import { IimageItem } from "@/interfaces/Iimage";
+import { random } from "lodash";
 
-const random = (): number => Math.floor(Math.random()*123) + 1
+const myRandom = (): number => random(1, 123)
 const generateId = () => Math.random().toString(36)
 
 const Home: NextPage = () => {
@@ -20,7 +21,7 @@ const Home: NextPage = () => {
 
 const addNewFox: MouseEventHandler<HTMLButtonElement> = (event) => {
   // event.preventDefault()
-  const newImageItem: IimageItem = { id: `${generateId()}`, url: `https://randomfox.ca/images/${random()}.jpg` }
+  const newImageItem: IimageItem = { id: `${generateId()}`, url: `https://randomfox.ca/images/${myRandom()}.jpg` }
   setImages([
     ...images,
     newImageItem
